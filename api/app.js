@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var carrerasRouter = require('./routes/carreras');
-var profesorRouter = require('./routes/profesor'); 
-var estudianteRouter = require('./routes/estudiante'); 
+var materiasRouter = require('./routes/materias');
+
 
 var app = express();
 
@@ -20,8 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/car', carrerasRouter);
-app.use('/profesor', profesorRouter); 
-app.use('/estudiante', estudianteRouter); 
+app.use('/mat', materiasRouter);
+
 
 app.use(function(req, res, next) {
   next(createError(404));
