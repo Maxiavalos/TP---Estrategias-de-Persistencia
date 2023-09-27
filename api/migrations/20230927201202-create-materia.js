@@ -11,14 +11,8 @@ module.exports = {
       nombre: {
         type: Sequelize.STRING
       },
-      ciclo: {
+      id_carrera: {
         type: Sequelize.INTEGER
-      },
-      creditos: {
-        type: Sequelize.INTEGER
-      },
-      carrera: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
