@@ -14,6 +14,9 @@ module.exports = {
       id_carrera: {
         type: Sequelize.INTEGER
       },
+      id_docente: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
