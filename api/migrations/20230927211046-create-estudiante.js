@@ -17,8 +17,8 @@ module.exports = {
       dni: {
         type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING
+      id_carrera: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
