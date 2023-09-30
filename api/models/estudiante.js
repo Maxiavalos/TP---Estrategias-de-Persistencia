@@ -4,10 +4,16 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING,
     apellido: DataTypes.STRING,
     dni: DataTypes.INTEGER,
-    email: DataTypes.STRING
+    id_carrera: DataTypes.INTEGER
   }, {});
+
   estudiante.associate = function(models) {
-    // associations can be defined here
+    // Asociación a carreras (pertenece a:)
+    estudiante.belongsTo(models.carrera, {
+      as: 'Estudiante-Carrera',
+      foreignKey: 'id_carrera'
+    });
   };
+
   return estudiante;
 };
