@@ -3,13 +3,19 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", (req, res, next) => {
+  const paginaActual = parseInt(req.query.paginaActual) || 1;
+  const cantidadAVer = parseInt(req.query.cantidadAVer) || 10;
+
   models.estudiante.findAll({
     attributes: ["id", "nombre", "apellido", "dni", "id_carrera"],
     include: [{ as: "Estudiante-Carrera", model: models.carrera, attributes: ["id", "nombre"] }],
+    offset: (paginaActual - 1) * cantidadAVer,
+    limit: cantidadAVer
   }).then((estudiantes) => res.send(estudiantes)).catch((error) => {
     return next(error);
   });
 });
+
 
 router.post("/", (req, res) => {
   models.estudiante
