@@ -1,16 +1,19 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var carrerasRouter = require('./routes/carreras');
-var materiasRouter = require('./routes/materias');
-var docenteRouter = require("./routes/docentes");
-var estudiantesRouter = require("./routes/estudiantes")
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const jwt = require('jsonwebtoken');
 
-var app = express();
+const secretKey = 'est-per';
 
-// view engine setup
+const carrerasRouter = require('./routes/carreras');
+const materiasRouter = require('./routes/materias');
+const docenteRouter = require('./routes/docentes');
+const estudiantesRouter = require('./routes/estudiantes');
+
+const app = express();
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -20,23 +23,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/car', carrerasRouter);
 app.use('/mat', materiasRouter);
-app.use("/doc", docenteRouter);
-app.use("/est", estudiantesRouter);
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use('/doc', docenteRouter);
+app.use('/est', estudiantesRouter);
+
+// Ruta del Login
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  if (username === 'unahur' && password === 'unahur') {
+    const token = jwt.sign({ username }, secretKey, { expiresIn: '3h' });
+
+    res.json({ token });
+  } else {
+    res.status(401).json({ message: 'Credenciales incorrectas' });
+  }
+});
+
+app.use((req, res, next) => {
   next(createError(404));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
